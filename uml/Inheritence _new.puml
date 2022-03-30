@@ -67,7 +67,18 @@ class MobEnemy {
     + forward():void
     + shoot():List<BaseBullet>
 }
-
+class Elite{
+    + Elite(int locationX, int locationY, int speedX, int speedY, int hp)
+    + forward():void
+    + shoot():List<BaseBullet>
+}
+AbstractAircraft <|-- Elite
+class Boss{
+    +Boss(int locationX, int locationY, int speedX, int speedY, int hp)
+    + forward():void
+    + shoot():List<BaseBullet>
+}
+AbstractAircraft <|--Boss
 class HeroBullet {
     + HeroBullet(int locationX, int locationY,
      int speedX, int speedY, int power)
@@ -77,5 +88,33 @@ class EnemyBullet {
     + EnemyBullet(int locationX, int locationY,
      int speedX, int speedY, int power)
 }
+abstract class Props{
+    + Props(int locationX,int locationY,int speedX,int speedY)
+    + getHp():int
+    + forward():void
+    + getType():int
 
+}
+class Prop_Blood{
+    - hp: int
+    - maxHp: int
+    + Prop_Blood(int locationX, int locationY, int speedX, int speedY,int hp)
+    + increaseHp():void
+    +getHp() : int
+    +getType():int
+}
+class Prop_Bomb{
+    +Prop_Bomb(int locationX, int locationY, int speedX, int speedY)
+    +getHp() : int
+    +getType():int
+}
+class Prop_Fire{
+    +Prop_Fire(int locationX, int locationY, int speedX, int speedY)
+    +getHp() : int
+    +getType():int
+}
+AbstractFlyingObject <|--Props
+Props <|-- Prop_Blood
+Props <|-- Prop_Bomb
+Props <|-- Prop_Fire
 @enduml

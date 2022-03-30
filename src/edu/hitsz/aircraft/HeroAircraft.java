@@ -25,7 +25,7 @@ public class HeroAircraft extends AbstractAircraft {
     private int power = 30;
 
     /**
-     * 子弹射击方向 (向上发射：1，向下发射：-1)
+     * 子弹射击方向 (向上发射：-1，向下发射：1)
      */
     private int direction = -1;
 
@@ -45,6 +45,12 @@ public class HeroAircraft extends AbstractAircraft {
         // 英雄机由鼠标控制，不通过forward函数移动
     }
 
+    public void increaseHp(int increase){
+        hp += increase;
+        if(hp >= maxHp) {
+            hp = maxHp;
+        }
+    }
     @Override
     /**
      * 通过射击产生子弹
