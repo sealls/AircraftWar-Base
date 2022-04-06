@@ -54,11 +54,11 @@ public class Game extends JPanel {
 
 
     public Game() {
-        heroAircraft = new HeroAircraft(
-                Main.WINDOW_WIDTH / 2,
-                Main.WINDOW_HEIGHT - ImageManager.HERO_IMAGE.getHeight() ,
-                0, 0, 100);
-
+//        heroAircraft = new HeroAircraft(
+//                Main.WINDOW_WIDTH / 2,
+//                Main.WINDOW_HEIGHT - ImageManager.HERO_IMAGE.getHeight() ,
+//                0, 0, 100);
+        heroAircraft = HeroAircraft.getInstance();
         enemyAircrafts = new LinkedList<>();
         props = new LinkedList<>();
         heroBullets = new LinkedList<>();
@@ -81,6 +81,9 @@ public class Game extends JPanel {
      * 游戏启动入口，执行游戏逻辑
      */
     public void action() {
+    EnemyFactory mobFactory = new MobFactory();
+    EnemyFactory eliteFactory = new EliteFactory();
+    EnemyFactory bossFactory = new BossFactory();
 
         // 定时任务：绘制、对象产生、碰撞判定、击毁及结束判定
         Runnable task = () -> {
@@ -93,21 +96,11 @@ public class Game extends JPanel {
                 // 新敌机产生
                 if (enemyAircrafts.size() < enemyMaxNumber) {
                      if(Math.random()<0.3){
-                         AbstractAircraft elite = new Elite(
-                            (int) ( Math.random() * (Main.WINDOW_WIDTH - ImageManager.ELITE_IMAGE.getWidth()))*1,
-                            (int) (Math.random() * Main.WINDOW_HEIGHT * 0.2)*1,
-                            8,
-                            10,
-                            30);
+                         AbstractAircraft elite = eliteFactory.summonEnemy();
                          enemyAircrafts.add(elite);
                          }
                      else {
-                         AbstractAircraft mobEnemy = new MobEnemy(
-                                 (int) (Math.random() * (Main.WINDOW_WIDTH - ImageManager.MOB_ENEMY_IMAGE.getWidth())) * 1,
-                                 (int) (Math.random() * Main.WINDOW_HEIGHT * 0.2) * 1,
-                                 0,
-                                 10,
-                                 30);
+                         AbstractAircraft mobEnemy = mobFactory.summonEnemy();
                          enemyAircrafts.add(mobEnemy);
                      }
                 }
@@ -230,30 +223,26 @@ public class Game extends JPanel {
                         // TODO 获得分数，产生道具补给
                         score += 10;
                         double r = Math.random();
+                        PropFactory bloodFactory = new BloodFactory();
+                        PropFactory bombFactory = new BombFactory();
+                        PropFactory bulletFactory = new BulletFactory();
                         if(enemyAircraft.getSpeedX() != 0) {
                             if(r<0.1) {
-                                Prop prob_Blood = new Prop_Blood(
+                                Prop prob_Blood = bloodFactory.summonProp(
                                         enemyAircraft.getLocationX(),
-                                        enemyAircraft.getLocationY(),
-                                        3,
-                                        10,
-                                        30);
+                                        enemyAircraft.getLocationY());
                                 props.add(prob_Blood);
                             }else if(r>0.7&&r<0.8) {
-                                Prop prob_Bomb = new Prop_Bomb(
+                                Prop prob_Bomb = bombFactory.summonProp(
                                         enemyAircraft.getLocationX(),
-                                        enemyAircraft.getLocationY(),
-                                        3,
-                                        10
-                                        );
+                                        enemyAircraft.getLocationY()
+                                );
                                 props.add(prob_Bomb);
                             }else if(r>0.9){
-                                Prop prob_Fire = new Prop_Fire(
+                                Prop prob_Fire = bulletFactory.summonProp(
                                         enemyAircraft.getLocationX(),
-                                        enemyAircraft.getLocationY(),
-                                        3,
-                                        10
-                                        );
+                                        enemyAircraft.getLocationY()
+                                );
                                 props.add(prob_Fire);
                             }
 

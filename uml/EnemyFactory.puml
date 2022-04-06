@@ -1,0 +1,48 @@
+@startuml
+'https://plantuml.com/class-diagram
+class Game
+abstract class EnemyFactory{
+    + summonEnemy():Enemy
+    + createEnemy():Enemy
+}
+abstract class Enemy{
+    + Enemy (int locationX, int locationY, int speedX, int speedY, int hp)
+    +shoot():List<BaseBullet>
+
+}
+class EnemyFactoryMob{
+    + createEnemy():Enemy
+}
+class EnemyFactoryElite{
+    + createEnemy():Enemy
+}
+class EnemyFactoryBoss{
+    + createEnemy():Enemy
+}
+class MobEnemy{
+      + MobEnemy(int locationX, int locationY, int speedX, int speedY, int hp)
+      + forward():void
+      + shoot():List<BaseBullet>
+}
+class Elite{
+     + Elite(int locationX, int locationY, int speedX, int speedY, int hp)
+     + forward():void
+     + shoot():List<BaseBullet>
+}
+class Boss{
+     +Boss(int locationX, int locationY, int speedX, int speedY, int hp)
+     + forward():void
+     + shoot():List<BaseBullet>
+}
+Game..>EnemyFactory
+Game..>Enemy
+MobEnemy..|>Enemy
+Elite..|>Enemy
+Boss..|>Enemy
+EnemyFactoryBoss..|>EnemyFactory
+EnemyFactoryMob..|>EnemyFactory
+EnemyFactoryElite..|>EnemyFactory
+EnemyFactoryBoss..>Boss
+EnemyFactoryElite..>Elite
+EnemyFactoryMob..>MobEnemy
+@enduml

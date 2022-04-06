@@ -8,7 +8,7 @@ import edu.hitsz.bullet.HeroBullet;
 import java.util.LinkedList;
 import java.util.List;
 
-public class Elite extends AbstractAircraft{
+public class Elite extends Enemy{
     public Elite(int locationX, int locationY, int speedX, int speedY, int hp) {
         super(locationX, locationY, speedX, speedY, hp);
     }
