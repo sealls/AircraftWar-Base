@@ -5,7 +5,10 @@ import edu.hitsz.bullet.BaseBullet;
 import java.util.LinkedList;
 import java.util.List;
 
-public class Boss extends Enemy{
+/**
+ * @author 86139
+ */
+public class Boss extends AbstractEnemy {
 
     public Boss(int locationX, int locationY, int speedX, int speedY, int hp) {
         super(locationX, locationY, speedX, speedY, hp);

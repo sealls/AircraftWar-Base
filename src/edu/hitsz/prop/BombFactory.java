@@ -1,10 +1,12 @@
 package edu.hitsz.prop;
-
-public class BombFactory extends PropFactory{
+/**
+ * @author 86139
+ */
+public class BombFactory extends AbstractPropFactory {
 
     @Override
-    Prop createProp() {
-        Prop prop = new Prop_Bomb(
+    AbstractProp createProp() {
+        AbstractProp prop = new Prop_Bomb(
                 getLocationX(),
                 getLocationY(),
                 3,

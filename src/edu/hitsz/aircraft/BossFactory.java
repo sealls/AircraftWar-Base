@@ -1,13 +1,13 @@
 package edu.hitsz.aircraft;
 
-import edu.hitsz.application.ImageManager;
-import edu.hitsz.application.Main;
-
-public class BossFactory extends EnemyFactory{
+/**
+ * @author 86139
+ */
+public class BossFactory extends AbstractEnemyFactory {
 
 
     @Override
-    public Enemy createEnemy() {
+    public AbstractEnemy createEnemy() {
         return null;
     }
 }

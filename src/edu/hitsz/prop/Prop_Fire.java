@@ -1,20 +1,20 @@
 package edu.hitsz.prop;
 
-public class Prop_Fire extends Prop{
+import edu.hitsz.aircraft.HeroAircraft;
 
+public class Prop_Fire extends AbstractProp {
 
+    /**
+     * @author 86139
+     */
     public Prop_Fire(int locationX, int locationY, int speedX, int speedY) {
         super(locationX, locationY, speedX, speedY);
 ;
     }
 
     @Override
-    public int getHp() {
-        return 0;
+    public void work(HeroAircraft heroAircraft){
+        System.out.println("Fire supply active!" );
     }
 
-    @Override
-    public int getType() {
-        return 3;
-    }
 }

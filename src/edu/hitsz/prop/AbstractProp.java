@@ -1,5 +1,6 @@
 package edu.hitsz.prop;
 
+import edu.hitsz.aircraft.HeroAircraft;
 import edu.hitsz.application.Main;
 import edu.hitsz.basic.AbstractFlyingObject;
 
@@ -9,21 +10,14 @@ import edu.hitsz.basic.AbstractFlyingObject;
  *
  * @author 86139
  */
-public abstract class Prop extends AbstractFlyingObject {
+public abstract class AbstractProp extends AbstractFlyingObject {
 
-     public Prop(int locationX, int locationY, int speedX, int speedY){
+     public AbstractProp(int locationX, int locationY, int speedX, int speedY){
         super(locationX, locationY, speedX, speedY);
     }
-    public abstract int getHp();
 
 
-    /**
-     * 道具种类；
-     * 1；血包
-     * 2；炸弹
-     * 3；子弹夹
-     */
-    public abstract int getType();
+    public abstract void work(HeroAircraft heroAircraft);
 
     @Override
     public void forward(){

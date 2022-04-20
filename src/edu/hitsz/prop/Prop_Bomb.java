@@ -1,6 +1,8 @@
 package edu.hitsz.prop;
 
-public class Prop_Bomb extends Prop{
+import edu.hitsz.aircraft.HeroAircraft;
+
+public class Prop_Bomb extends AbstractProp {
 
     public Prop_Bomb(int locationX, int locationY, int speedX, int speedY) {
         super(locationX, locationY, speedX, speedY);
@@ -8,13 +10,8 @@ public class Prop_Bomb extends Prop{
     }
 
     @Override
-    public  int getHp(){
-        return 0;
-    }
-
-    @Override
-    public int getType() {
-        return 2;
+    public void work(HeroAircraft heroAircraft){
+        System.out.println("Bomb supply active!");
     }
 
 }

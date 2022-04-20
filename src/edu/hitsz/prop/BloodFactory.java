@@ -1,14 +1,16 @@
 package edu.hitsz.prop;
 
-public class BloodFactory extends PropFactory{
+/**
+ * @author 86139
+ */
+public class BloodFactory extends AbstractPropFactory {
     @Override
-    public Prop createProp(){
-        Prop prop = new Prop_Blood(
+    public AbstractProp createProp(){
+        AbstractProp prop = new Prop_Blood(
                 getLocationX(),
                 getLocationY(),
                 3,
-                10,
-                30
+                10
                 );
         return prop;
     }

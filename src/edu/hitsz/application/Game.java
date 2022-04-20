@@ -3,7 +3,6 @@ package edu.hitsz.application;
 import edu.hitsz.aircraft.*;
 import edu.hitsz.bullet.BaseBullet;
 import edu.hitsz.basic.AbstractFlyingObject;
-import edu.hitsz.bullet.EnemyBullet;
 import edu.hitsz.prop.*;
 import org.apache.commons.lang3.concurrent.BasicThreadFactory;
 
@@ -35,7 +34,7 @@ public class Game extends JPanel {
 
     private final HeroAircraft heroAircraft;
     private final List<AbstractAircraft> enemyAircrafts;
-    private final List<Prop> props;
+    private final List<AbstractProp> props;
     private final List<BaseBullet> heroBullets;
     private final List<BaseBullet> enemyBullets;
 
@@ -81,9 +80,9 @@ public class Game extends JPanel {
      * 游戏启动入口，执行游戏逻辑
      */
     public void action() {
-    EnemyFactory mobFactory = new MobFactory();
-    EnemyFactory eliteFactory = new EliteFactory();
-    EnemyFactory bossFactory = new BossFactory();
+    AbstractEnemyFactory mobFactory = new MobFactory();
+    AbstractEnemyFactory eliteFactory = new EliteFactory();
+    AbstractEnemyFactory bossFactory = new BossFactory();
 
         // 定时任务：绘制、对象产生、碰撞判定、击毁及结束判定
         Runnable task = () -> {
@@ -179,7 +178,7 @@ public class Game extends JPanel {
         for (AbstractAircraft enemyAircraft : enemyAircrafts) {
             enemyAircraft.forward();
         }
-        for (Prop prop : props){
+        for (AbstractProp prop : props){
             prop.forward();
         }
     }
@@ -223,27 +222,27 @@ public class Game extends JPanel {
                         // TODO 获得分数，产生道具补给
                         score += 10;
                         double r = Math.random();
-                        PropFactory bloodFactory = new BloodFactory();
-                        PropFactory bombFactory = new BombFactory();
-                        PropFactory bulletFactory = new BulletFactory();
+                        AbstractPropFactory bloodFactory = new BloodFactory();
+                        AbstractPropFactory bombFactory = new BombFactory();
+                        AbstractPropFactory bulletFactory = new BulletFactory();
                         if(enemyAircraft.getSpeedX() != 0) {
                             if(r<0.1) {
-                                Prop prob_Blood = bloodFactory.summonProp(
+                                AbstractProp probBlood = bloodFactory.summonProp(
                                         enemyAircraft.getLocationX(),
                                         enemyAircraft.getLocationY());
-                                props.add(prob_Blood);
+                                props.add(probBlood);
                             }else if(r>0.7&&r<0.8) {
-                                Prop prob_Bomb = bombFactory.summonProp(
+                                AbstractProp probBomb = bombFactory.summonProp(
                                         enemyAircraft.getLocationX(),
                                         enemyAircraft.getLocationY()
                                 );
-                                props.add(prob_Bomb);
+                                props.add(probBomb);
                             }else if(r>0.9){
-                                Prop prob_Fire = bulletFactory.summonProp(
+                                AbstractProp probFire = bulletFactory.summonProp(
                                         enemyAircraft.getLocationX(),
                                         enemyAircraft.getLocationY()
                                 );
-                                props.add(prob_Fire);
+                                props.add(probFire);
                             }
 
                         }
@@ -258,22 +257,13 @@ public class Game extends JPanel {
         }
 
         // Todo: 我方获得道具，道具生效
-        for(Prop prob : props){
+        for(AbstractProp prob : props){
             if(prob.notValid()){
                 continue;
             }
             if(heroAircraft.crash(prob)){
-                if(prob.getType() ==1){
-                    heroAircraft.increaseHp(prob.getHp());
-                    System.out.println("BloodSupply active!");
-                    prob.vanish();
-                }else if(prob.getType() == 2){
-                    System.out.println("BombSupply active!");
-                    prob.vanish();
-                }else if(prob.getType() == 3){
-                    System.out.println("FireSupply active!");
-                    prob.vanish();
-                }
+                prob.work(heroAircraft);
+                prob.vanish();
             }
         }
     }

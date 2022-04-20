@@ -7,10 +7,10 @@ import java.util.List;
 /**
  * @author 86139
  */
-public abstract class Enemy extends AbstractAircraft  {
+public abstract class AbstractEnemy extends AbstractAircraft  {
 
 
-    public Enemy(int locationX, int locationY, int speedX, int speedY, int hp) {
+    public AbstractEnemy(int locationX, int locationY, int speedX, int speedY, int hp) {
         super(locationX, locationY, speedX, speedY, hp);
     }
 
