@@ -43,9 +43,9 @@ class HeroAircraftTest {
     @Test
     void shoot() {
         List<BaseBullet> heroBullets= new LinkedList<>();
-        heroBullets.addAll(heroAircraft.shoot());
-        heroBullets.addAll(heroAircraft.shoot());
-        heroBullets.addAll(heroAircraft.shoot());
+        heroBullets.addAll(heroAircraft.shoot(heroAircraft));
+        heroBullets.addAll(heroAircraft.shoot(heroAircraft));
+        heroBullets.addAll(heroAircraft.shoot(heroAircraft));
         assertEquals(3,heroBullets.size(),"Shoot Test Fail");
 
     }

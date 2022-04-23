@@ -28,7 +28,7 @@ public class MobEnemy extends AbstractEnemy {
     }
 
     @Override
-    public List<BaseBullet> shoot() {
+    public List<BaseBullet> shoot(AbstractAircraft aircraft) {
         return new LinkedList<>();
     }
 

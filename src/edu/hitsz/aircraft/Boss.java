@@ -1,7 +1,11 @@
 package edu.hitsz.aircraft;
 
+import edu.hitsz.application.Main;
 import edu.hitsz.bullet.BaseBullet;
+import edu.hitsz.strategy.Context;
+import edu.hitsz.strategy.Scattering;
 
+import java.util.ConcurrentModificationException;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -15,10 +19,16 @@ public class Boss extends AbstractEnemy {
     }
 
     @Override
-    public List<BaseBullet> shoot() {
-        return new LinkedList<>();
+    public List<BaseBullet> shoot(AbstractAircraft aircraft) {
+        Context context = new Context(new Scattering());
+        return context.executeStrategy(aircraft);
     }
     @Override
-    public  void forward(){};
+    public  void forward(){
+        super.forward();
+        if (locationY >= Main.WINDOW_HEIGHT ) {
+            vanish();
+        }
+    }
 
 }

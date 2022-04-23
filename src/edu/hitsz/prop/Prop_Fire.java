@@ -1,6 +1,7 @@
 package edu.hitsz.prop;
 
 import edu.hitsz.aircraft.HeroAircraft;
+import edu.hitsz.strategy.Scattering;
 
 public class Prop_Fire extends AbstractProp {
 
@@ -14,7 +15,9 @@ public class Prop_Fire extends AbstractProp {
 
     @Override
     public void work(HeroAircraft heroAircraft){
-        System.out.println("Fire supply active!" );
+
+        System.out.println("Fire supply active!");
+        heroAircraft.setStrategy(new Scattering());
     }
 
 }

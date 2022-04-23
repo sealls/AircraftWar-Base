@@ -42,8 +42,9 @@ public abstract class AbstractAircraft extends AbstractFlyingObject {
      * @return
      *  可射击对象需实现，返回子弹
      *  非可射击对象空实现，返回null
+     * @param aircraft
      */
-    public  List<BaseBullet> shoot(){
+    public  List<BaseBullet> shoot(AbstractAircraft aircraft){
         return null;
     };
 

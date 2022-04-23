@@ -1,0 +1,49 @@
+@startuml
+'https://plantuml.com/class-diagram
+
+ class RecordDaoImpl{
+    - records:List<Record>
+    + RecordDaoImpl()
+    + doDelete(int scoreId):void
+    + setAllRecord():List<Record>
+    + getAllRecord():List<Record>
+    + AddRecord(Record record):void
+    + DeleteRecord(Record record):void
+ }
+class Record{
+    - serialVersionUID:long
+    - rank:int
+    - UserName:String
+    - score:int
+    - String time
+    + Record(int score,String userName,String time)
+    + getRank():int
+    + setRank(int scoreId):void
+    + getUserName():String
+    + setUserName(String UserName):void
+    + getTime():String
+    + setTime(String time):void
+
+}
+interface RecordDao{
+   setAllRecord(List<Record> records):void
+
+   getAllRecord():List<Record>
+
+   addRecord(Record record):void
+
+   deleteRecord(Record record):void
+}
+class RecordTable{
+ + makeTable(String userName,int score):void
+
+}
+
+RecordTable ..>RecordDao
+RecordDaoImpl..|>RecordDao
+RecordDaoImpl--|>Record
+
+
+
+
+@enduml

@@ -5,6 +5,7 @@ import edu.hitsz.bullet.BaseBullet;
 import edu.hitsz.basic.AbstractFlyingObject;
 import edu.hitsz.prop.*;
 import org.apache.commons.lang3.concurrent.BasicThreadFactory;
+import edu.hitsz.dao.RecordTable;
 
 import javax.swing.*;
 import java.awt.*;
@@ -38,11 +39,13 @@ public class Game extends JPanel {
     private final List<BaseBullet> heroBullets;
     private final List<BaseBullet> enemyBullets;
 
+    private final RecordTable recordTable;
     private int enemyMaxNumber = 5;
 
     private boolean gameOverFlag = false;
     private int score = 0;
     private int time = 0;
+    private int flag = 0;
     /**
      * 周期（ms)
      * 指示子弹的发射、敌机的产生频率
@@ -58,6 +61,8 @@ public class Game extends JPanel {
 //                Main.WINDOW_HEIGHT - ImageManager.HERO_IMAGE.getHeight() ,
 //                0, 0, 100);
         heroAircraft = HeroAircraft.getInstance();
+
+        recordTable = new RecordTable();
         enemyAircrafts = new LinkedList<>();
         props = new LinkedList<>();
         heroBullets = new LinkedList<>();
@@ -94,6 +99,11 @@ public class Game extends JPanel {
                 System.out.println(time);
                 // 新敌机产生
                 if (enemyAircrafts.size() < enemyMaxNumber) {
+                     if(score>0&&score%200==0&&flag==0){
+                         AbstractAircraft boss = bossFactory.summonEnemy();
+                         enemyAircrafts.add(boss);
+                         flag = 1;
+                     }
                      if(Math.random()<0.3){
                          AbstractAircraft elite = eliteFactory.summonEnemy();
                          enemyAircrafts.add(elite);
@@ -124,6 +134,12 @@ public class Game extends JPanel {
 
             // 游戏结束检查
             if (heroAircraft.getHp() <= 0) {
+                System.out.println("****************************");
+                System.out.println("**********得分排行榜**********");
+                System.out.println("****************************");
+                recordTable.makeTable("testUsername",score);
+                System.out.println("\n****************************\n");
+
                 // 游戏结束
                 executorService.shutdown();
                 gameOverFlag = true;
@@ -158,11 +174,11 @@ public class Game extends JPanel {
     private void shootAction() {
         // TODO 敌机射击
         for(AbstractAircraft enemyAircrafts:enemyAircrafts){
-            enemyBullets.addAll(enemyAircrafts.shoot());
+            enemyBullets.addAll(enemyAircrafts.shoot(enemyAircrafts));
         }
 
         // 英雄射击
-        heroBullets.addAll(heroAircraft.shoot());
+        heroBullets.addAll(heroAircraft.shoot(heroAircraft));
     }
 
     private void bulletsMoveAction() {
@@ -220,24 +236,27 @@ public class Game extends JPanel {
                     bullet.vanish();
                     if (enemyAircraft.notValid()) {
                         // TODO 获得分数，产生道具补给
+                        if(enemyAircraft instanceof Boss){
+                            flag=0;
+                        }
                         score += 10;
                         double r = Math.random();
                         AbstractPropFactory bloodFactory = new BloodFactory();
                         AbstractPropFactory bombFactory = new BombFactory();
                         AbstractPropFactory bulletFactory = new BulletFactory();
                         if(enemyAircraft.getSpeedX() != 0) {
-                            if(r<0.1) {
+                            if(r<0.3) {
                                 AbstractProp probBlood = bloodFactory.summonProp(
                                         enemyAircraft.getLocationX(),
                                         enemyAircraft.getLocationY());
                                 props.add(probBlood);
-                            }else if(r>0.7&&r<0.8) {
+                            }else if(r>0.3&&r<0.7) {
                                 AbstractProp probBomb = bombFactory.summonProp(
                                         enemyAircraft.getLocationX(),
                                         enemyAircraft.getLocationY()
                                 );
                                 props.add(probBomb);
-                            }else if(r>0.9){
+                            }else if(r>0.7){
                                 AbstractProp probFire = bulletFactory.summonProp(
                                         enemyAircraft.getLocationX(),
                                         enemyAircraft.getLocationY()

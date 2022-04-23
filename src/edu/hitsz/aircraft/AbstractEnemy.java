@@ -15,5 +15,5 @@ public abstract class AbstractEnemy extends AbstractAircraft  {
     }
 
     @Override
-    public abstract List<BaseBullet> shoot();
+    public abstract List<BaseBullet> shoot(AbstractAircraft abstractAircraft);
 }

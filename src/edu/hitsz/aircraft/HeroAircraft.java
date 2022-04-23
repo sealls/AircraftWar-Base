@@ -4,7 +4,11 @@ import edu.hitsz.application.ImageManager;
 import edu.hitsz.application.Main;
 import edu.hitsz.bullet.BaseBullet;
 import edu.hitsz.bullet.HeroBullet;
+import edu.hitsz.strategy.Context;
+import edu.hitsz.strategy.Straight;
+import edu.hitsz.strategy.Strategy;
 
+import java.util.ConcurrentModificationException;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -40,9 +44,10 @@ public class HeroAircraft extends AbstractAircraft {
      */
 
     private static HeroAircraft heroAircraft;
-
+    private Strategy strategy;
     private HeroAircraft(int locationX, int locationY, int speedX, int speedY, int hp) {
         super(locationX, locationY, speedX, speedY, hp);
+        this.strategy= new Straight();
     }
 
     public static HeroAircraft getInstance(){
@@ -65,25 +70,18 @@ public class HeroAircraft extends AbstractAircraft {
             hp = maxHp;
         }
     }
+    public void setStrategy(Strategy strategy){
+        this.strategy = strategy;
+    }
     @Override
     /**
      * 通过射击产生子弹
      * @return 射击出的子弹List
      */
-    public List<BaseBullet> shoot() {
-        List<BaseBullet> res = new LinkedList<>();
-        int x = this.getLocationX();
-        int y = this.getLocationY() + direction*2;
-        int speedX = 0;
-        int speedY = this.getSpeedY() + direction*5;
-        BaseBullet abstractBullet;
-        for(int i=0; i<shootNum; i++){
-            // 子弹发射位置相对飞机位置向前偏移
-            // 多个子弹横向分散
-            abstractBullet = new HeroBullet(x + (i*2 - shootNum + 1)*10, y, speedX, speedY, power);
-            res.add(abstractBullet);
-        }
-        return res;
+
+    public List<BaseBullet> shoot(AbstractAircraft aircraft) {
+        Context context = new Context(strategy);
+        return context.executeStrategy(aircraft);
     }
 
 }
